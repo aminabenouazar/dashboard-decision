@@ -26,8 +26,6 @@ code3/
 
 │── chocolate_sales.csv # Dataset (⚠️ à télécharger depuis Google Drive)
 
-yaml
-Copy code
 
 ---
 
@@ -93,4 +91,5 @@ Développement d’un modèle prédictif afin d’anticiper les chocolats les pl
 👩‍💻 Amina Benouazar
 Étudiante en Ingénierie Digitale pour la Finance – ENSIAS
 Passionnée par la Data Science & la Finance 📊💡
+
 
