@@ -15,10 +15,15 @@ Ce projet consiste à développer un **tableau de bord interactif** permettant l
 ## 📂 Structure du projet
 code3/
 │── modele/ # Scripts & modèles ML (.pkl, .ipynb, .csv)
+
 │── static/ # Fichiers statiques (images, CSS, JS)
+
 │── templates/ # Templates HTML pour l’interface
+
 │── api.py # Backend FastAPI
+
 │── visualisation.py # Scripts de visualisation
+
 │── chocolate_sales.csv # Dataset (⚠️ à télécharger depuis Google Drive)
 
 yaml
@@ -88,3 +93,4 @@ Développement d’un modèle prédictif afin d’anticiper les chocolats les pl
 👩‍💻 Amina Benouazar
 Étudiante en Ingénierie Digitale pour la Finance – ENSIAS
 Passionnée par la Data Science & la Finance 📊💡
+
