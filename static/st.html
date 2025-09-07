@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Graines de Chocolat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <style>
+    /* Général */
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    /* En-tête */
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px 30px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    .logo {
+      height: 60px;
+    }
+
+    /* ✅ Image pleine largeur entre logo et dashboard */
+    .full-width-image-container {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .full-width-image {
+      width: 100%;
+      height: 300px; /* ✅ Hauteur moyenne */
+      object-fit: cover; 
+      display: block;
+    }
+
+    /* Section Dashboard */
+    .dashboard-full {
+      position: relative;
+      text-align: center;
+      margin-bottom: 40px;
+      background-color: #8B4513;
+      padding: 40px 0;
+    }
+
+    .dashboard-title h2 {
+      color: #ffffff;
+      font-size: 36px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .underline {
+      width: 80px;
+      height: 4px;
+      background-color: #ffffff;
+      margin: 10px auto;
+    }
+
+    .dashboard-banner {
+      width: 90%;
+      height: auto;
+      margin-top: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Bouton prédiction */
+    button {
+      background-color: #8B4513;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #A0522D;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔝 Bandeau du haut -->
+  <header class="top-header">
+    <div class="header-left">
+      <img src="/static/localisateur.png" alt="Localisation" class="icon">
+      <img src="/static/whatsapp.png" alt="WhatsApp" class="icon">
+    </div>
+    <div class="header-center">
+      <img src="/static/image (7).png" alt="Logo Graines de Chocolat" class="logo">
+    </div>
+    <div class="header-right">
+      <img src="/static/image.png" alt="Recherche" class="icon">
+      <img src="/static/panier.png" alt="Panier" class="icon">
+    </div>
+  </header>
+
+  <!-- 🖼️ Bannière -->
+  <div class="full-width-image-container">
+    <img src="/static/img20200313155646239.jpg" alt="Bannière" class="full-width-image">
+  </div>
+
+  <!-- 📊 Section Dashboard -->
+  <!-- 📊 Section Dashboard -->
+<section class="dashboard-full">
+  <div class="dashboard-title">
+    <h2>📊 Dashboard des ventes</h2>
+    <div class="underline"></div>
+    <button onclick="actualiserDashboard()">🔄 Actualiser le dashboard</button>
+  </div>
+
+  <img id="graph1" src="data:image/png;base64,{{ graph1 }}">
+  <img id="graph2" src="data:image/png;base64,{{ graph2 }}">
+</section>
+<script>
+function actualiserDashboard() {
+  fetch("/dashboard-data")
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        document.getElementById("graph1").src = "data:image/png;base64," + data.graph1;
+        document.getElementById("graph2").src = "data:image/png;base64," + data.graph2;
+        alert("✅ Dashboard mis à jour !");
+      } else {
+        alert("❌ Erreur : " + data.message);
+      }
+    })
+    .catch(err => {
+      alert("❌ Erreur JS : " + err);
+    });
+}
+</script>
+
+  <!-- 🔮 Section Prédiction -->
+  <section style="text-align:center; margin: 50px 20px;">
+    <h2>📈 Prédiction du Best-Seller</h2>
+    <p>Appuyez sur le bouton pour envoyer des données au modèle de prédiction.</p>
+    <button onclick="envoyerPrediction()">Lancer la prédiction</button>
+  </section>
+
+  <!-- 📜 Script JS -->
+  <script>
+    function envoyerPrediction() {
+      fetch("/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          year: 2024,
+          month: 7,
+          product_encoded: 2,
+          boxes_shipped: 500
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.prediction !== undefined) {
+          alert("✅ Résultat de prédiction : " + data.prediction);
+        } else {
+          alert("✅ Résultat de prédiction : " + JSON.stringify(data));
+        }
+      })
+      .catch(err => {
+        alert("✅ Résultat de prédiction  : " + err);
+      });
+    }
+  </script>
+<a href="/sells">
+  <button style="margin-top: 30px;">🛒 Ajouter une vente</button>
+</a>
+</body>
+</html>

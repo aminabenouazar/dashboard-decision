@@ -1,0 +1,184 @@
+<!-- templates/sells.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter une Vente - Graines de Chocolat</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      padding: 40px;
+      text-align: center;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, select, button {
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #8B4513;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #A0522D;
+    }
+
+    h2 {
+      color: #8B4513;
+    }
+
+    table {
+      margin: 40px auto;
+      width: 90%;
+      border-collapse: collapse;
+      background-color: #fff;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #8B4513;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🛒 Ajouter une vente</h2>
+
+  <form id="sellsForm">
+    <input type="text" placeholder="Nom du client" name="client_name" required>
+
+    <select name="product" required>
+      <option value="">-- Sélectionner un produit --</option>
+      <option>Classique Coffee</option>
+      <option>Praline cisette</option>
+      <option>Caramande</option>
+      <option>Napolitain noir Équateur</option>
+      <option>Bali (gingembre confit dans une coque noir)</option>
+      <option>Divin (praliné intense dans une coque en chocolat au lait)</option>
+      <option>Réglisse enrobée</option>
+      <option>Cœur rouge (praliné pur puissant et fondant)</option>
+      <option>Amande caramélisée au chocolat noir et au lait</option>
+      <option>Coco croquant</option>
+      <option>Délice</option>
+      <option>Love (ganache speculoos)</option>
+      <option>Intense (nougatine pistache)</option>
+      <option>Le Rocher praliné gourmand à la ganache amère</option>
+      <option>Amande caramélisée au chocolat</option>
+      <option>Le Rocher praliné</option>
+      <option>Paradis riz soufflé et amandes</option>
+      <option>Paris Brest</option>
+      <option>Amande caramel d'Isigny et fleur de sel</option>
+      <option>Passion (nougatine pistache, crêpe dentelle)</option>
+      <option>Tiramisu (ganache onctueuse saveur caféinée)</option>
+      <option>Feuille d'automne</option>
+      <option>L’Amer (chocolat 75% cacao)</option>
+      <option>Buchette praliné croquant aux amandes valenciennes</option>
+      <option>L’Insolite nougatine (enrobée de chocolat, éclats d’amandes caramélisées)</option>
+      <option>Écorces d'orange</option>
+      <option>Le Meringué (ganache citron, éclats de meringue)</option>
+      <option>Le Palet (ganache noir saveur cappuccino)</option>
+      <option>Gingembre enrobé</option>
+      <option>Plaisir praliné gourmand amandes Valencia</option>
+      <option>Praline noisettes</option>
+      <option>Le Rocher praliné gourmand dans une coque en chocolat noir</option>
+      <option>Grains de café noir</option>
+      <option>Le Fruité (chocolat noir aux éclats de framboises)</option>
+      <option>Le Noble</option>
+      <option>Classique Coconut</option>
+      <option>Pistachio</option>
+      <option>Calisson</option>
+      <option>Le Rocher praliné gourmand orné de noisettes</option>
+      <option>Paradis (noisette gianduja)</option>
+      <option>Napolitain au lait et caramel</option>
+      <option>Divin praliné intense dans une coque noire</option>
+      <option>L’Orientale (nougatine aux sésames)</option>
+      <option>Savoureux</option>
+    </select>
+
+    <input type="date" name="date" required>
+    <input type="number" placeholder="Montant en DH" name="amount_in_dh" required>
+    <input type="number" placeholder="Nombre de boîtes expédiées" name="boxes_shipped" required>
+    <button type="submit">➕ Ajouter</button>
+  </form>
+
+  <h2>📋 Historique des ventes</h2>
+  <table id="salesTable">
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>Produit</th>
+        <th>Date</th>
+        <th>Montant (DH)</th>
+        <th>Boîtes expédiées</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Ventes ajoutées apparaîtront ici -->
+    </tbody>
+  </table>
+
+  <script>
+    document.getElementById("sellsForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      data.amount_in_dh = parseFloat(data.amount_in_dh);
+      data.boxes_shipped = parseInt(data.boxes_shipped);
+
+      fetch("/add-sell", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          alert("✅ Vente ajoutée !");
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.client_name}</td>
+            <td>${data.product}</td>
+            <td>${data.date}</td>
+            <td>${data.amount_in_dh}</td>
+            <td>${data.boxes_shipped}</td>
+          `;
+          document.querySelector("#salesTable tbody").appendChild(row);
+          this.reset();
+        } else {
+          alert("❌ Erreur : " + result.message);
+        }
+      })
+      .catch(error => {
+        alert("❌ Erreur réseau : " + error);
+      });
+    });
+  </script>
+
+</body>
+</html>
