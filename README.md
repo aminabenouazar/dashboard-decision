@@ -31,7 +31,7 @@ code3/
 
 ## ⚙️ Installation & Lancement
 
-### 1️⃣ Créer un environnement virtuel
+##1️⃣ Créer un environnement virtuel
 ```bash
 python -m venv venv
 Sous Windows :
@@ -91,5 +91,6 @@ Développement d’un modèle prédictif afin d’anticiper les chocolats les pl
 👩‍💻 Amina Benouazar
 Étudiante en Ingénierie Digitale pour la Finance – ENSIAS
 Passionnée par la Data Science & la Finance 📊💡
+
 
 
